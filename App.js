@@ -1,117 +1,142 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import React, { forwardRef, useState } from 'react'
+import Axios from 'axios'
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+const Item = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.item}>
+      <Image source={{uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'}} style={styles.profpict}></Image>
+      <View style={styles.bio}>
+        <Text style={styles.nama}>Nama Lengkap</Text>
+        <Text style={styles.email}>Email</Text>
+        <Text style={styles.bidang}>Bidang</Text>
+      </View>
+      <Text style={styles.delete}>X</Text>
     </View>
-  );
-};
+  )
+}
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const [nama, setNama] = useState("")
+  const [email, setEmail] = useState("")
+  const [bidang, setBidang] = useState("")
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const submit = () => {
+    const data = {
+      nama,
+      email,
+      bidang
+    }
+    console.log('data before send: ', data)
+
+    Axios.post('http://192.168.137.1:3000/users/', data)
+    .then(res => {
+      console.log('res: ', res)
+      setNama("")
+      setEmail("")
+      setBidang("")
+    })
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+    <View style={styles.container}>
+      <Text style={styles.title}>Basic CRUD</Text>
+      <Text style={styles.subtitle}>Masukkan anggota</Text>
+      <TextInput placeholder='Nama Lengkap' style={styles.input} value={nama} onChangeText={(value) => setNama(value)}></TextInput>
+      <TextInput placeholder='Email' style={styles.input} value={email} onChangeText={(value) => setEmail(value)}></TextInput>
+      <TextInput placeholder='Bidang' style={styles.input} value={bidang} onChangeText={(value) => setBidang(value)}></TextInput>
+      <TouchableOpacity style={styles.button} onPress={submit}>
+        <Text style={styles.textButton}>SIMPAN</Text>
+      </TouchableOpacity>
+      <View style={styles.line} />
+      <Item />
+      <Item />
+      <Item />
+    </View>
+  )
+}
+
+export default App
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    padding: 20,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
-export default App;
+  subtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 18
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 50,
+    marginVertical: 10,
+    paddingHorizontal: 25
+  },
+
+  button: {
+    backgroundColor: '#DDDDDD',
+    padding: 20,
+    marginVertical: 20,
+    borderRadius: 15
+  },
+
+  textButton: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'black'
+  },
+
+  line: {
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 50
+  },
+
+  item: {
+    flexDirection: 'row',
+    marginVertical: 10
+  },
+
+  profpict: {
+    height: 100,
+    width: 100,
+    borderRadius: 50
+  },
+
+  bio: {
+    marginLeft: 20,
+    flex: 1
+  },
+
+  nama: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  },
+
+  email: {
+    fontSize: 16,
+    marginBottom: 5
+  },
+
+  bidang: {
+    fontSize: 12
+  },
+
+  delete: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red'
+  }
+})

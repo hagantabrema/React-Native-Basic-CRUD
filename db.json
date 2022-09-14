@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nama": "haganta",
+      "email": "haganta@gmail.com",
+      "bidang": "IT"
+    },
+    {
+      "id": 2,
+      "nama": "deny",
+      "email": "deny@gmail.com",
+      "bidang": "IT"
+    },
+    {
+      "id": 3,
+      "nama": "eleanor",
+      "email": "eleanor@gmail.com",
+      "bidang": "IT"
+    },
+    {
+      "id": 4,
+      "nama": "bentley",
+      "email": "bentley@gmail.com",
+      "bidang": "IT"
+    },
+    {
+      "nama": "Haganta Brema Bangun",
+      "email": "hagantabangun@gmail.com",
+      "bidang": "IT",
+      "id": 5
+    },
+    {
+      "nama": "Deny Jefriyanti Sitohang",
+      "email": "denysitohang@gmail.com",
+      "bidang": "Art",
+      "id": 6
+    }
+  ]
+}
